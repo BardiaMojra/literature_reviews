@@ -13,11 +13,12 @@ multi-class classification tasks, ([Zadrozny and Elkan 2002](http://citeseerx.is
 ## Problem Statement
 
 In machine learning, classification problems are often solved by deploying a
-predictive model trained on some given data set but often under perform and make
-miscalibrated predictions ("classifier score"). Statistically speaking, for a
-calibrated prediction of i.e. 40%, there will be an occurrence of 40% for a given
- test set that is 1) large enough with respect to solution space size, 2) test
-data set is randomly selected (for more insight read on _Central Limit Theorem_).
+a predictive model trained on some given data set but often under perform and
+make miscalibrated predictions ("classifier score"). Statistically speaking, for
+a calibrated prediction of i.e. 40%, there will be an occurrence of 40% for a
+give test set that is 1) large enough with respect to solution space size, 2)
+test data set is randomly selected (for more insight read on
+ _Central Limit Theorem_).
 
 
 Figure 1 is a reliability curve (DeGroot and Fienberg 1983; Niculescu-Mizil and
@@ -76,7 +77,7 @@ Where:
 + P(M) : prior distribution of binning model M, uniform distribution for initial
  condition
 
-Above equation is used for model averaging by BBQ, they point out that mentioned
+The above equation is used for model averaging by BBQ, they point out that mentioned
 Bayesian scores could be used for model selection. Per Hoeting (Hoeting et al. 1999),
 model averaging is superior to model selection methods.
 

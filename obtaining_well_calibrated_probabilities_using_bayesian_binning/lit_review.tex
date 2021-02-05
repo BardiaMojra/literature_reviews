@@ -1,0 +1,181 @@
+\documentclass[11pt]{article}
+\usepackage{bookmark}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{color}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{graphicx}
+%\usepackage[hidelinks]{hyperref}
+\usepackage{makecell}
+\usepackage[caption=false,font=footnotesize,subrefformat=parens,labelformat=parens]{subfig}
+\usepackage{wrapfig}
+\usepackage{url}
+\usepackage[table]{xcolor}
+%
+\setlength{\parindent}{0.25in}
+\setlength{\parskip}{.05in}
+\pagestyle{plain}
+%Title, date an author of the document
+\title{Literature Review}
+\author{Bardia Mojra}
+
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\bigskip
+\bigskip
+\begin{center}
+      Robotic Vision Lab
+\end{center}
+
+\begin{center}
+      The University of Texas at Arlington
+\end{center}
+
+\section{Obtaining Well Calibrated Probabilities Using Bayesian Binning}
+
+\begin{itemize}
+      \item code: \url{https://github.com/pakdaman/calibration/}
+      \item paper: \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4410090/}
+      \item citation: \cite{naeini2015obtaining}
+\end{itemize}
+
+      \subsection{Introduction}
+      \par In this paper, the authors propose a novel calibration method for
+      probabilistic predictive models. Bayesian Binning into Qualities (BBQ),
+      is a non-parametric and post-processing calibration method. Their
+      proposed method is a binary classifier calibration method is based on the
+      histogram-binning calibration method \cite{zadrozny2001obtaining}. It is
+      important to note this method could be extended to multi-class
+      classification tasks \cite{zadrozny2002transforming}.
+
+      \subsection{Problem Statement}
+      \par In machine learning, classification problems are often solved by deploying a
+      a predictive model trained on some given data set but often underperform and
+      make miscalibrated predictions ("classifier score"). Statistically speaking, for
+      a calibrated prediction of i.e. 40\%, there will be an occurrence of 40\% for a
+      give test set that is 1) large enough with respect to solution space size, 2)
+      test data set is randomly selected (for more insight read on
+      \textit{Central Limit Theorem}.
+
+      Figure 1 is a reliability curve \cite{degroot1983comparison}
+      \cite{niculescu2005predicting} that is used as an example of a predictive
+      model with poorly estimated probabilities.
+
+      %\write18{wget https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4410090/bin/nihms679964f1.jpg}
+      %\includegraphics[with=\textwidth]{./nihms679964f1.jpg}
+
+      \subsection{Related Work}
+      \par Mainly, calibration is done two ways 1) \textit{ab initio}, by modifying
+      objective function which increases computational cost. 2) It can be done as a
+      post-processing procedure. Post processing can be categorized into parametric
+      and non-parametric. Platt's method is an example of parametric calibration,
+      \cite{platt1999probabilistic}. Non-parametric methods include histogram-
+      binning \cite{zadrozny2001obtaining}, Platt scaling
+      \cite{platt1999probabilistic}, and isotonic regression
+      \cite{zadrozny2002transforming}.
+
+      \subsection{Method}
+      \par BBQ is an extension of simple histogram binning method
+      \cite{zadrozny2001obtaining}, with added capability to consider different
+      binning models (different number of bins) and their combinations under a
+      Bayesian framework \cite{heckerman1995learning}. The generated Bayesian
+      score provides further insight into network structure and it is also used
+      when combining binning models.
+
+      $$ \textit{Score}(M) ~=~ P(M)~.~P(D | M) $$
+
+      The marginal likelihood, $P(D | M)$, has a closed form solution under the
+      following 3 conditions, \cite{heckerman1995learning}:
+
+      \begin{enumerate}
+            \item All samples are under i.i.d. assumption and the class
+            distribution $P(Z|B=b)$, which is class distribution for bin b,
+            with a binomial distribution with parameter $\theta_b$.
+            \item Bin distributions are independent.
+            \item The prior distribution over binning model parameters $\theta$'s
+            are modeled using a Beta distribution.
+      \end{enumerate}
+
+      Marginal likelihood in closed form, \cite{heckerman1995learning}:
+
+      $$
+      P(D|M) = \prod_{b=1}^{B} \frac{\Gamma(\frac{N'}{B})}{\Gamma (N_b + \frac{N'}{B})}
+      \frac{\Gamma (m_b + \alpha_b)}{\Gamma (\alpha_b)}
+      \frac{\Gamma (n_b + \beta_b)}{\Gamma (\beta_b)}
+      $$
+
+      Where:
+      \begin{itemize}
+      \item $\Gamma(n) = (n-1)!$
+      \item $N_b$: The total number of training instances in the $b$'th bin.
+      \item $n_b$: The total instances of class *zero* among all training
+      instances $N_b$.
+      \item $m_b$: The total instances of class *one* among all training
+      instances $N_b$.
+      \item $P(M)$: The prior distribution of binning model M, uniform
+      distribution for initial condition.
+      \end{itemize}
+
+      \par The above equation is used for model averaging by BBQ, they point
+      out that mentioned Bayesian scores could be used for model selection. Per
+      \cite{hoeting1999bayesian}, model averaging is superior to model
+      selection methods.
+
+      \subsection{BBQ}
+      BBQ framework defines calibrated prediction as:
+
+      $$
+      P(z=1|y) = \sum_{i=1}^{T} \frac{\textit{Score}(M_i)}{\sum_{j=1}^{T} \textit{Score}(M_j)}
+      ~.~ P(z=1 | y, M_i)
+      $$
+
+      Where:
+      \begin{itemize}
+            \item $T$ : total number of binning models considered
+            \item $P(z=1 | y, M_i)$ : probability estimate using model $M_i$ for uncalibrated
+      classifier output y.
+      \end{itemize}
+
+
+      \subsection{Calibration Measures}
+      \begin{itemize}
+            \item ECE: Expected Calibration Error is calculated over the bins.
+            \item MCE: Maximum Calibration Error is calculated among the bins.
+      \end{itemize}
+
+      $$
+      ECE = \sum_{i=1}^{K}P(i).|o_i - e_i| ~~,~~ MCE= \max\limits_{i=1}^{K}(|o_i-e_i|),
+      $$
+
+      Where:
+      \begin{itemize}
+            \item $o_i$: true fraction of positive instances in the i$^{th}$ bin.
+            \item $e_i$: mean of the post-calibrated probabilities in the i$^{th}$ bin.
+            \item $P(i)$: empirical probability (fraction) of all instances in the i$^{th}$ bin.
+
+      \end{itemize}
+      \subsection{Empirical Results}
+      \begin{itemize}
+            \item Acc: accuracy
+            \item AUC: area under the ROC curve (receiver operator characteristic curve).
+            \item RMSE
+            \item ECE
+            \item MCE
+      \end{itemize}
+
+
+%Sets the bibliography style to UNSRT and import the
+\newpage
+\bibliography{references}
+\bibliographystyle{ieeetr}
+
+\end{document}
