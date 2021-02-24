@@ -1,0 +1,89 @@
+\documentclass[11pt]{article}
+\usepackage{bookmark}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{color}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{graphicx}
+%\usepackage[hidelinks]{hyperref}
+\usepackage{makecell}
+\usepackage[caption=false,font=footnotesize,subrefformat=parens,labelformat=parens]{subfig}
+\usepackage{wrapfig}
+\usepackage{url}
+\usepackage[table]{xcolor}
+%
+\setlength{\parindent}{0.25in}
+\setlength{\parskip}{.05in}
+\pagestyle{plain}
+%Title, date an author of the document
+\title{Literature Review}
+\author{Bardia Mojra}
+
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\bigskip
+\bigskip
+\begin{center}
+      Robotic Vision Lab
+\end{center}
+
+\begin{center}
+      The University of Texas at Arlington
+\end{center}
+
+\section{PVNet}
+
+\begin{itemize}
+      \item code: \url{}
+      \item paper: \url{}
+      \item citation:
+\end{itemize}
+
+      \subsection{Introduction}
+      \par In this paper, the authors propose a novel two-stage pose estimation
+      framework, Pixel-wise Voting Network or PVNet. First, they estimate 2D
+      keypoints for each object in a RANSAC-like fashion which enables uncertainty
+      measurement in the following stage. In the second stage, they use a
+      modified EPnP algorithm \cite{lepetit2009epnp} that leverages feature
+      uncertainty \cite{ferraz2014leveraging} to calculate estimated object 6D
+      position.
+
+      \subsection{Problem Statement}
+      \par Although 6D pose estimation has been subject of research for many
+      years and great accuracy has been achieved, many state of the art solutions
+      do not take advantage of uncertainty among observed features.
+
+
+      \subsection{Related Work}
+      \subsubsection{Hollistic Methods}
+
+      \subsubsection{Keypoint-Based Methods}
+
+      \subsubsection{Dense Methods}
+
+      \subsection{Method}
+      \par This framework proposes a new method, PVNet, for generating
+      keypoints uncertainty data. They
+
+      mean and covariance information which they integrated into
+      an the EPnP \cite{ferraz2014leveraging}
+
+
+
+
+
+%Sets the bibliography style to UNSRT and import the
+\newpage
+\bibliography{references}
+\bibliographystyle{ieeetr}
+
+\end{document}
